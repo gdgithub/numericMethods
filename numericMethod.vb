@@ -6,24 +6,24 @@ Module Main
 
     Sub Main()
         'Ejercicio 1
-        'MsgBox(newton(AddressOf first, AddressOf first_derivate, 6, 10, 0.0000001))    'b)
-        'MsgBox(secante(AddressOf first, 2, 1, 10, 0.00001))                            'c)
+        'MsgBox(newton(AddressOf oscilacionAmort, AddressOf oscilacionAmort_derivate, 6, 10, 0.0000001))    'b)
+        'MsgBox(secante(AddressOf oscilacionAmort, 2, 1, 10, 0.00001))                                      'c)
         
         'Ejercio 2
-        'MsgBox(secante(AddressOf second, 2, 1, 100, 0.0001))
+        'MsgBox(secante(AddressOf renta, 2, 1, 100, 0.0001))
     End Sub
 
     Delegate Function functionMath(x As Double) As Double
 
     'Ejercicio 1
-    Function first(x As Double) As Double
+    Function oscilacionAmort(x As Double) As Double
         Dim k As Double = 0.7
         Dim w As Double = 4
 
         Return 9 * Math.Exp(-1 * k * x) * Math.Cos(w * x)
     End Function
 
-    Function first_derivate(x As Double) As Double
+    Function oscilacionAmort_derivate(x As Double) As Double
         Dim k As Double = 0.7
         Dim w As Double = 4
 
@@ -31,13 +31,22 @@ Module Main
     End Function
 
     'Ejercicio 2
-
-    Function second(x as Double) as Double
+    Function renta(x as Double) as Double
         Dim P as Double = 25000
         Dim A as Double = 5500
         Dim n as Integer = 6
         
         return (P * x * (1+x)^n)/((1+x)^n - 1) - A
+    End Function
+
+    'Ejercicio 3
+    Function deflexion(x as Double) as Double
+        Dim w as Double = 2.5
+        Dim E as Double = 50000
+        Dim I as Double = 30000
+        Dim L as Double = 600
+        
+        return 0
     End Function
 
     Function newton(f As functionMath, fd As functionMath, x0 As Double, maxIter As Integer, err As Double)
