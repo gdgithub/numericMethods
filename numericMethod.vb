@@ -13,8 +13,9 @@ Module Main
         'MsgBox(secante(AddressOf renta, 2, 1, 100, 0.0001))
 
         'Ejercicio 3
-        MsgBox(biseccion(AddressOf deflexion_derivate, -500, 0, 10, 0.0000001))
-   End Sub
+        'MsgBox(biseccion(AddressOf deflexion_derivate, -500, 0, 10, 0.0000001))                            'a) Biseccion
+        'MsgBox(regula_falsi(AddressOf deflexion_derivate, -500, 0, 10, 0.0000001))                         'b) Regula-Falsi
+    End Sub
 
     Delegate Function functionMath(x As Double) As Double
 
@@ -113,7 +114,7 @@ Module Main
                 p = (a + b)/2
                 fp = f.Invoke(p)
 
-                If fp = 0 And Math.Abs(b - a) < err Then
+                If fp = 0 Or Math.Abs(b - a) < err Then
                     Console.WriteLine("Se ha alcanzado la aproximacion con la precision especificada o el cero")
                     Exit For
                 Else
@@ -130,6 +131,39 @@ Module Main
         End If
 
         return p
+    End Function
+
+    Function regula_falsi(f as functionMath, x0 as Double, x1 as Double, maxIter as Integer, err as Double) as Double
+        Dim a,b,c,fc,fa,fb As Double
+        a = x0
+        b = x1
+
+        fa = f.Invoke(a)
+        fb = f.Invoke(b)
+        if fa*fb > 0 Then
+            Console.WriteLine("No se puede aplicar en metodo de biseccion en el intervalo dado.")
+        Else
+            For i as Integer = 1 To maxIter
+                c = (a*fb - b*fa)/(fb - fa)
+                fc = f.Invoke(c)
+
+                If fc = 0 Or Math.Abs(b - a) < err Then
+                    Console.WriteLine("Se ha alcanzado la aproximacion con la precision especificada o el cero")
+                    Exit For
+                Else
+                    If fa*fc > 0 Then
+                        a = c
+                        fa = fc
+                    Else
+                        b = c
+                        fb = fc
+                    End If
+                End If
+
+            Next
+        End If
+
+        return c
     End Function
 
 End Module
