@@ -11,7 +11,10 @@ Module Main
         
         'Ejercio 2
         'MsgBox(secante(AddressOf renta, 2, 1, 100, 0.0001))
-    End Sub
+
+        'Ejercicio 3
+        MsgBox(biseccion(AddressOf deflexion_derivate, -500, 0, 10, 0.0000001))
+   End Sub
 
     Delegate Function functionMath(x As Double) As Double
 
@@ -46,7 +49,16 @@ Module Main
         Dim I as Double = 30000
         Dim L as Double = 600
         
-        return 0
+        return (w / (120*E*I*L)) * (-1*x^5 + 2*L^2*x^3 - L^4*x) 
+    End Function
+
+    Function deflexion_derivate(x as Double) as Double
+        Dim w as Double = 2.5
+        Dim E as Double = 50000
+        Dim I as Double = 30000
+        Dim L as Double = 600
+        
+        return (w / (120*E*I*L)) * (-5*x^4 + 6*L^2*x^2 - L^4) 
     End Function
 
     Function newton(f As functionMath, fd As functionMath, x0 As Double, maxIter As Integer, err As Double)
@@ -85,6 +97,39 @@ Module Main
         Next
         
         Return c
+    End Function
+
+    Function biseccion(f as functionMath, x0 as Double, x1 as Double, maxIter as Integer, err as Double) as Double
+        Dim a,b,p,fp,fa,fb As Double
+        a = x0
+        b = x1
+
+        fa = f.Invoke(a)
+        fb = f.Invoke(b)
+        if fa*fb > 0 Then
+            Console.WriteLine("No se puede aplicar en metodo de biseccion en el intervalo dado.")
+        Else
+            For i as Integer = 1 To maxIter
+                p = (a + b)/2
+                fp = f.Invoke(p)
+
+                If fp = 0 And Math.Abs(b - a) < err Then
+                    Console.WriteLine("Se ha alcanzado la aproximacion con la precision especificada o el cero")
+                    Exit For
+                Else
+                    If fa*fp > 0 Then
+                        a = p
+                        fa = fp
+                    Else
+                        b = p
+                        fb = fp
+                    End If
+                End If
+
+            Next
+        End If
+
+        return p
     End Function
 
 End Module
